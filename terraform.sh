@@ -1,27 +1,27 @@
 #!/bin/bash
 
-terraform_bin="/usr/local/bin/terraform"
-
-if [[ ! -f "$terraform_bin" ]]; then
+if [[ $(which terraform) ]]; then
+	terraform_bin=$(which terraform)
+else
         echo "Terraform command not found"
         exit 2
 fi
 
 terraform_files_dir=$1
 
-if [[ $1 == '' ]]; then
+if [[ $terraform_files_dir == '' ]]; then
         echo "Directory path cannot be empty, please provide a valid path"
         exit 2
 else
-        if [[ ! -d $1 ]]; then
-                echo "Path: $1:  does not exist"
+        if [[ ! -d $terraform_files_dir ]]; then
+                echo "Path: $terraform_files_dir:  does not exist"
                 exit 2
         fi
 fi
 
 #output_file=
 
-for i in $(find $1 -type f -name 'main.tf' -printf '%h\n')
+for i in $(find $terraform_files_dir -type f -name 'main.tf' -printf '%h\n')
 do
         echo -e "\nTerraform initializing in $i/"
         ${terraform_bin} -chdir="$i/" init
