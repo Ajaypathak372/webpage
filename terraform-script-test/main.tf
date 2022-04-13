@@ -1,5 +1,6 @@
 provider "aws" {
- profile = "default"
+ #profile = "default"
+  region = "ap-south-1"
 }
 
 data "aws_ami" "ubuntu" {
